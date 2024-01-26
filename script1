@@ -1,0 +1,57 @@
+#!/bin/bash
+
+file=""
+select opt in name path
+do
+	if [ "$opt" == "name" ]
+	then
+		read -p "enter the file name : " file
+  		read -p "enter a path of  directory to search in or / to search in all directories or . to search in current directory " s
+		if [ $(find $s -name $file 2>/dev/null) ]
+		then
+			echo " $file is exist"
+			break
+		else
+			echo " $file not exist"
+			exit
+		fi
+	elif [ "$opt" == "path" ]
+	then
+		read -p "enter the path : " file
+		break
+	else
+		echo "option is not exist "
+	fi
+done
+
+echo "here some info about $file"
+echo " 	       ---------      "
+if [ -f "$file" ]
+then
+	echo "Type : file"
+else
+	echo "Type : Directory "
+fi
+echo "Size : $(du -h $file | cut -d "	" -f1 ) "
+echo "permessions :- "
+if [ -r $file ]
+then
+	echo "	readable"
+else
+	echo "	Not readble"
+fi
+
+if [ -w $file ]
+then
+	echo "	writable"
+else
+	echo "	Not Writable"
+fi
+
+if [ -x $file ]
+then
+	echo "	excutable"
+else
+	echo "	Not excutable"
+fi
+echo "owner $(stat -c "%U" $file)"

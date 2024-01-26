@@ -1,0 +1,48 @@
+#!/bin/bash
+
+warp-cli disconnect
+sleep 1
+warp-cli delete
+
+sleep 1
+
+warp-svc register& 
+sudo systemctl enable --now warp-svc.service 
+warp-cli register >/dev/null
+warp-cli connect
+
+sleep 2
+echo ""
+echo -n "currnet ip is : "
+ifconfig -a | grep -E -o 'inet[[:space:]]([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)'  | awk '{print $2; exit }' > ip.$$
+currIP=$(<ip.$$);
+rm ip.$$
+echo $currIP
+
+read -p "enter the path of open vpn file : or press d -> to use the default path : " x
+y=/home/no_one/mohamedGamall.ovpn
+
+echo "while ! ping -c 3 10.10.10.10; do
+    sleep 0.5
+    echo 'Trying to ping...'
+done
+
+warp-cli disconnect
+warp-cli delete
+rm \$0" > execute.$$
+
+
+
+chmod u+x execute.$$
+
+xdotool key ctrl+shift+t
+xdotool type "bash execute.$$ "
+xdotool key Return
+
+if [ $x == "d" ]
+then
+    sudo openvpn $y
+else
+    sudo openvpn $x
+fi
+
