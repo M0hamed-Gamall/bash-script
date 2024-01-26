@@ -1,0 +1,15 @@
+#!/bin/bash
+
+backup_dir=/home/no_one/Desktop     # where the backup will be stored 
+
+backup_time=$(date +"%Y%m%d-%H%M%S")     # make backup stored with the time to be unique
+
+backup_file="dir-backup.$backup_time.tar.gz"   #backup file name
+ 
+tar -czf "$backup_dir/$backup_file" /home   # first par is path where the backup will be stored   
+                                            # second para is the directory which i make the backup for it  
+
+
+# to uncompress backup use
+
+# tar -xzf file.tar.gz 
