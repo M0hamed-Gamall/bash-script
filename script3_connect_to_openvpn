@@ -19,8 +19,7 @@ currIP=$(<ip.$$);
 rm ip.$$
 echo $currIP
 
-read -p "enter the path of open vpn file : or press d -> to use the default path : " x
-y=/home/no_one/mohamedGamall.ovpn
+read -p "enter the path of open vpn file : " x
 
 echo "while ! ping -c 3 10.10.10.10; do
     sleep 0.5
@@ -39,10 +38,6 @@ xdotool key ctrl+shift+t
 xdotool type "bash execute.$$ "
 xdotool key Return
 
-if [ $x == "d" ]
-then
-    sudo openvpn $y
-else
-    sudo openvpn $x
-fi
+
+sudo openvpn $x
 
