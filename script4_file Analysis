@@ -1,0 +1,21 @@
+#!/bin/bash
+
+
+for file in ./*
+ do
+    echo "Analyzing file: $file"
+
+    fileType=$(file "$file")
+
+    echo "File type: $fileType"
+
+    echo "Media Information (Mediainfo):"
+    mediainfo "$file"
+
+    echo ""
+
+    echo "Strings Output:"
+    strings "$file" | head -n 10 
+
+    echo "-------------------------------------------------"
+done
