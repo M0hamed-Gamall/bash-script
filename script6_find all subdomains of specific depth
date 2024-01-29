@@ -1,46 +1,31 @@
 #!/bin/bash 
 if [ "$#" -ne 2 ]; then
-    echo "Usage: $0 <domains_file> <iterations>"
+    echo "Usage: $0 <domains_file> <depth>"
     exit 1
 fi
 
 domains_file=$1
-iterations=$2
-curr=curr.$$.txt
+depth=$2
 
-touch $curr
+regex="^[^.]*"
+for ((i=1; i<=$depth; i++)); do
+    regex+="\.[^.]*"
+done
+regex+="$"
 
-cat $1 | sort -u > $curr
-cat $curr
 
-touch temp.$$ temp1.$$
-for domain in $(cat $curr)
+touch temp.$$ 
+for domain in $(cat $domains_file)
 do
-    depth=1
-    if [ $iterations -ne 1 ]
-    then
-        subfinder -d $domain > temp.$$
-        while [ $iterations -ne $depth ]
-        do
-            ((depth++))
-
-            regex="^[^.]*"
-            for ((i=1; i<=$depth; i++)); do
-                regex+="\.[^.]*"
-            done
-            regex+="$"
-
-            grep -E "$regex" temp.$$ > temp1.$$
-            cat temp1.$$ > temp.$$
-        done
-    fi
-    echo "number of subdomains of depth $iterations of $domain is $(wc -l temp.$$):- " >> final_subdomains.$$
-    echo "----------------------------"
+    subfinder -d $domain | grep -E "$regex" | sort -u > temp.$$
+           
+    echo "number of subdomains of depth $depth of $domain is $(wc -l temp.$$ | cut -d " " -f1):- " >> final_subdomains.$$
+    echo "----------------------------" >> final_subdomains.$$
     cat temp.$$ >> final_subdomains.$$
 
-    echo " " >> final_subdomains.$$
-    echo " " >> final_subdomains.$$
+    echo " **************************************" >> final_subdomains.$$
+    echo " **************************************" >> final_subdomains.$$
 done
 
-rm temp.$$ $curr temp1.$$
+rm temp.$$ 
 
