@@ -1,0 +1,46 @@
+#!/bin/bash 
+if [ "$#" -ne 2 ]; then
+    echo "Usage: $0 <domains_file> <iterations>"
+    exit 1
+fi
+
+domains_file=$1
+iterations=$2
+curr=curr.$$.txt
+
+touch $curr
+
+cat $1 | sort -u > $curr
+cat $curr
+
+touch temp.$$ temp1.$$
+for domain in $(cat $curr)
+do
+    depth=1
+    if [ $iterations -ne 1 ]
+    then
+        subfinder -d $domain > temp.$$
+        while [ $iterations -ne $depth ]
+        do
+            ((depth++))
+
+            regex="^[^.]*"
+            for ((i=1; i<=$depth; i++)); do
+                regex+="\.[^.]*"
+            done
+            regex+="$"
+
+            grep -E "$regex" temp.$$ > temp1.$$
+            cat temp1.$$ > temp.$$
+        done
+    fi
+    echo "All subdomains of depth $iterations of $domain :- " >> final_subdomains.$$
+    echo "----------------------------"
+    cat temp.$$ >> final_subdomains.$$
+
+    echo " " >> final_subdomains.$$
+    echo " " >> final_subdomains.$$
+done
+
+rm temp.$$ $curr temp1.$$
+

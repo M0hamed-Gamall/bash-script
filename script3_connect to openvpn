@@ -21,9 +21,19 @@ echo $currIP
 
 read -p "enter the path of open vpn file : " x
 
-echo "while ! ping -c 3 10.10.10.10; do
+
+echo "
+remove_me() {
+    rm -- "\$0"
+    exit
+}
+trap remove_me SIGINT
+
+
+while ! ping -c 3 10.10.10.10; do
     sleep 0.5
     echo 'Trying to ping...'
+    echo "press ctrl + c  to stop the program "
 done
 
 warp-cli disconnect
