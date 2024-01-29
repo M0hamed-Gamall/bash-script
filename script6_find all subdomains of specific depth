@@ -34,7 +34,7 @@ do
             cat temp1.$$ > temp.$$
         done
     fi
-    echo "All subdomains of depth $iterations of $domain :- " >> final_subdomains.$$
+    echo "number of subdomains of depth $iterations of $domain is $(wc -l temp.$$):- " >> final_subdomains.$$
     echo "----------------------------"
     cat temp.$$ >> final_subdomains.$$
 
