@@ -4,7 +4,7 @@ backup_dir=/home/no_one/Desktop
 
 backup_time=$(date +"%Y%m%d-%H%M%S")    
 
-backup_file="dir-backup.$backup_time.tar.gz"  
+backup_file="dir-backup.$backup_time.tar"  
  
 tar -czf "$backup_dir/$backup_file" /home      
                                               
